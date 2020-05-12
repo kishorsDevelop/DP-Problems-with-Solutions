@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+//wordBreak function
+int ans(vector<string> v,string s){
+
+    vector<bool> dp(s.size(),false);     // dp array
+    for(int i=0;i<s.size();i++){
+         auto it = find(v.begin(),v.end(),s.substr(0,i+1));   // check for word by word from string in list
+         if(it!=v.end()){
+             dp[i] = true;         // if found  check True and continue to next word in string
+             continue;
+         }
+         for (int j=i; j>0 ; j--)  // if not found than backtrack to check if there is an existing word in the remaining sentence 
+         {
+            auto it = find(v.begin(),v.end(),s.substr(j,i-j+1));
+            if(dp[j-1] && it!=v.end()){       // check for the previous and new word in sentence in the list
+                  dp[i] = true;
+                  break;
+            }
+         }
+    }
+   return dp[s.size()-1];
+}
+int main()
+{
+    int t;
+    cin>>t;   // testcases
+    while(t--){
+      int n;
+      cin>>n;   // number of words in  list
+      vector<string> v;
+      string a;
+      while(n--){
+         cin>>a;
+         v.push_back(a);     // list of word to check for segmentation
+      }
+      string b;  // string to segment
+      cin>>b;
+      cout<<ans(v,b)<<"\n";
+    }
+    return 0;
+}
